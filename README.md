@@ -11,6 +11,6 @@ of the type `-- c[chapter number]e[exercise number]`.
 
 - similar repos include:
 
-    - [by @carlosgaldino](https://github.com/carlosgaldino/programming-in-haskell)
+    - by [@carlosgaldino](https://github.com/carlosgaldino/programming-in-haskell)
     
-    - [by @myshov](https://github.com/myshov/programming_in_haskell)
+    - by [@myshov](https://github.com/myshov/programming_in_haskell)
