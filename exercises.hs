@@ -497,3 +497,61 @@ doubleWrap9 n = if n > 4 then ((double n) - 9) else double n
 
 luhn' :: [Int] -> Bool
 luhn' = (== 0) . (`mod` 10) . sum . (altMap id doubleWrap9) . reverse
+
+-- c8e1
+--- In a similar manner to the function add, define a recursive
+--- multiplication function mult :: Nat -> Nat -> Nat for the
+--- recursive type of natural numbers.
+data Nat = Zero | Succ Nat
+  deriving Show
+
+addNat :: Nat -> Nat -> Nat
+addNat n Zero = n
+addNat n (Succ m) = Succ (addNat n m)
+
+multNat :: Nat -> Nat -> Nat
+multNat _ Zero = Zero
+multNat n (Succ m) = addNat (multNat n m) n
+
+-- c8e2
+--- Using the function compare, redefine the function occurs :: Ord a
+--- => a -> Tree a -> Bool for search trees. Why is this new
+--- definition more efficient than the original version?
+data Tree a = Leaf a | Node (Tree a) a (Tree a)
+  deriving Show
+
+t :: Tree Int
+t = Node (Node (Leaf 1) 3 (Leaf 4)) 5 (Node (Leaf 6) 7 (Leaf 9))
+
+occurs :: Ord a => a -> Tree a -> Bool
+occurs x (Leaf y) = x == y
+occurs x (Node l y r) | compare x y == LT = occurs x l
+                      | compare x y == GT = occurs x r
+                      | otherwise = occurs x (Leaf y)
+
+-- c8e3
+--- Let us say that such a tree is balanced if the number of leaves in
+--- the left and right subtree of every node differs by at most one,
+--- with leaves themselves being trivially balanced. Define a function
+--- balanced :: Tree a -> Bool that decides if a binary tree is
+--- balanced or not.
+data Tree' a = Leaf' a | Node' (Tree' a) (Tree' a)
+  deriving Show
+
+countLeaves :: Tree' a -> Int
+countLeaves (Leaf' y) = 1
+countLeaves (Node' l r) = countLeaves l + countLeaves r
+
+balanced :: Tree' a -> Bool
+balanced (Leaf' y) = True
+balanced (Node' l r) = balanced l && balanced r && (countLeaves l == countLeaves r)
+
+-- c8e4
+--- Define a function balance :: [a] -> Tree a that converts a
+--- non-empty list into a balanced tree.
+balance :: [a] -> Tree' a
+--balance [] = (Leaf' [])
+balance [x] = (Leaf' x)
+balance xs = Node' (balance l) (balance r)
+  where
+    (l, r) = halve xs

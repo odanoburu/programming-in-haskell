@@ -1,6 +1,7 @@
 # programming in haskell
 
-my solutions to the book `programming in haskell`, by Graham Hutton.
+my solutions to the second edition of the book `programming in
+haskell`, by Graham Hutton.
 
 [[book page]](http://www.cs.nott.ac.uk/~pszgmh/pih.html)
 
@@ -14,3 +15,5 @@ of the type `-- c[chapter number]e[exercise number]`.
     - by [@carlosgaldino](https://github.com/carlosgaldino/programming-in-haskell)
     
     - by [@myshov](https://github.com/myshov/programming_in_haskell)
+
+**note**: some of these repos are for the first edition of the book.
