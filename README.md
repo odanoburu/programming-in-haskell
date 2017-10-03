@@ -16,4 +16,6 @@ of the type `-- c[chapter number]e[exercise number]`.
     
     - by [@myshov](https://github.com/myshov/programming_in_haskell)
 
-**note**: some of these repos are for the first edition of the book.
+**note**: some of these repos are for the first edition of the book,
+you can see the first edition's webpage on
+[archive.org](https://web.archive.org/web/20150920022947/http://www.cs.nott.ac.uk/~pszgmh/book.html).
