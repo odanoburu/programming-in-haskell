@@ -1,4 +1,5 @@
 import Data.Char
+import System.IO
 
 -- c10e1
 --- Redefine putStr :: String -> IO () using a list comprehension and
@@ -34,14 +35,57 @@ putBoard'' xs = sequence_ [putRow n x | (n, x) <- zip [1..] xs]
 -- c10e4
 --- Define an action adder :: IO () that reads a given number of
 --- integers from the keyboard, one per line, and displays their sum.
-newline :: IO ()
-newline = putChar '\n'
+readNum :: IO Int
+readNum = do strn <- getLine
+             let n = read strn :: Int
+             return n
 
-adder' :: Int -> Int -> IO Int
-adder' 0 t = t
-adder' n s = do k <- getLine
-                adder' (n-1) (s + (read k :: Int))
+adder' :: Int -> IO Int
+adder' remaining = do
+  if (remaining /= 0)
+    then do
+      number <- readNum
+      restsum <- adder' (remaining - 1)
+      return (number + restsum)
+    else do
+      return 0
 
-{-adder :: IO ()
-adder = do putStr "how many numbers?"
-           read-}
+adder :: IO ()
+adder = do putStrLn "how many numbers?"
+           howmany <- readNum
+           sum <- adder' howmany
+           putStrLn ("The total is " ++ (show sum))
+           return ()
+
+-- c10e5
+--- Redefine adder using the function sequence :: [IO a] -> IO [a]
+--- that performs a list of actions and returns a list of the
+--- resulting values.
+adder'' :: IO ()
+adder'' = do putStrLn "how many numbers?"
+             howmany <- readNum
+             numbers <- sequence $ replicate howmany readNum
+             let total = sum numbers
+             putStrLn ("The total is " ++ (show total))
+             return ()
+
+
+-- c10e6
+--- Using getCh, define an action readLine :: IO String that behaves
+--- in the same way as getLine, except that it also permits the delete
+--- key to be used to remove characters. Hint: the delete character is
+--- ’\DEL’, and the control character for moving the cursor back one
+--- space is ’\b’.
+getCh :: IO Char
+getCh = do hSetEcho stdin False
+           x <- getChar
+           hSetEcho stdin True
+           return x
+
+readLine :: IO String
+readLine = do c <- getCh
+              case c of '\n' -> return []
+                        '\DEL' -> do cs <- readLine
+                                     return ('\b':cs)
+                        _ -> do cs <- readLine
+                                return (c:cs)
